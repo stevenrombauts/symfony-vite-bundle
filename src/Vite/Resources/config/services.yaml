@@ -4,8 +4,9 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: true
         bind:
-            string $devServerOrigin: '%env(VITE_DEV_SERVER)%'
-            string $cdnUrl: '%env(APP_CDN)%'
+            string $devServerOrigin: '%vite.dev_server%'
+            string $cdnUrl: '%vite.app_cdn%'
+            string $vitePublicBasePath: '%vite.public_base_path%'
 
     Vite\:
         resource: '../../'

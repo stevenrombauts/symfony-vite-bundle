@@ -12,7 +12,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ManifestParser implements ManifestParserInterface
 {
     public function __construct(
-        private HttpClientInterface $internalNginx
+        private HttpClientInterface $internalNginx,
+        private string $vitePublicBasePath,
     ) {
     }
 
@@ -24,7 +25,7 @@ class ManifestParser implements ManifestParserInterface
      */
     public function getParsedManifest(): ViteManifestDto
     {
-        $response = $this->internalNginx->request('GET', '/build/.vite/manifest.json', [
+        $response = $this->internalNginx->request('GET', '/' . ltrim($this->vitePublicBasePath, '/') . '.vite/manifest.json', [
             'headers' => [
                 'Accept' => 'application/json',
             ],

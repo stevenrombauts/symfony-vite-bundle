@@ -10,7 +10,16 @@ add
 ```
 to your bundles.php
 
-### environment variables
+### Configuration
+
+```yaml
+# config/packages/webforge_vite.yaml
+webforge_vite:
+    dev_server: '%env(VITE_DEV_SERVER)%'
+    app_cdn: '%env(APP_CDN)%'
+```
+
+with environment variables: 
 
 ```
 INTERNAL_WEB_ADDR='http://nginx'
@@ -20,7 +29,6 @@ APP_CDN=
 
 `VITE_DEV_SERVER` point this to the full url where your vite dev server runs (if you run `vite`). Your browser needs to have access to this url.
 `INTERNAL_WEB_ADDR` point this to your internal web server. Your PHP (container) needs to get access via this url to the files written by vite into the public folder.
-
 `APP_CDN` special setup for production, if you use a cdn.
 
 ## usage

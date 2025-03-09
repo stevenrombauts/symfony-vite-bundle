@@ -12,10 +12,18 @@ class WebforgeViteExtension extends Extension implements PrependExtensionInterfa
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('vite.app_cdn', $config['app_cdn']);
+        $container->setParameter('vite.dev_server', $config['dev_server']);
+        $container->setParameter('vite.public_base_path', $config['public_base_path']);
+
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
         );
+
         $loader->load('services.yaml');
     }
 

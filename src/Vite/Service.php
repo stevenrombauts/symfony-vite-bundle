@@ -11,14 +11,12 @@ use Vite\Exception\OnlyViteDevServerIsRunningException;
 
 final class Service
 {
-    private string $base;
-
     public function __construct(
         private ManifestParserInterface $manifestParser,
         private string $devServerOrigin,
-        private string $cdnUrl
+        private string $cdnUrl,
+        private string $vitePublicBasePath,
     ) {
-        $this->base = '/build/';
         $this->cdnUrl = rtrim($this->cdnUrl, '/');
     }
 
@@ -32,7 +30,7 @@ final class Service
 
         try {
             $manifest = $this->manifestParser->getParsedManifest();
-            $url = $this->cdnUrl . $this->base;
+            $url = $this->cdnUrl . $this->vitePublicBasePath;
 
             foreach ($manifest->records as $record) {
                 $js[] = new ViteRenderedScriptTagDto(
@@ -48,12 +46,12 @@ final class Service
             }
         } catch (OnlyViteDevServerIsRunningException $e) {
             $js[] = new ViteRenderedScriptTagDto(
-                $this->devServerOrigin . $this->base . '@vite/client',
+                $this->devServerOrigin . $this->vitePublicBasePath . '@vite/client',
                 'module'
             );
 
             $js[] = new ViteRenderedScriptTagDto(
-                $this->devServerOrigin . $this->base . 'assets/' . $entryPointName . '.js',
+                $this->devServerOrigin . $this->vitePublicBasePath . 'resources/assets/' . $entryPointName . '.js',
                 'module'
             );
         }
